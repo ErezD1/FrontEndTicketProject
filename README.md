@@ -8,12 +8,6 @@
     <em></em>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/github/license/ErezD1/FrontEndTicketProject?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/ErezD1/FrontEndTicketProject?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/ErezD1/FrontEndTicketProject?style=default&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/ErezD1/FrontEndTicketProject?style=default&color=0080ff" alt="repo-language-count">
-<p>
-<p align="center">
 	<!-- default option, no dependency badges. -->
 </p>
 
@@ -60,68 +54,74 @@ The FrontEndTicketProject is a comprehensive and user-centric application that p
 
 ```sh
 └── FrontEndTicketProject/
-    ├── index.html
-    ├── package-lock.json
-    ├── package.json
-    ├── postcss.config.js
-    ├── README.md
-    ├── src
-    │   ├── @types
-    │   │   └── types.d.ts
-    │   ├── assets
-    │   │   └── react.svg
-    │   ├── components
-    │   │   ├── Card.tsx
-    │   │   ├── DarkModeToggle
-    │   │   │   ├── DarkModeToggle.module.scss
-    │   │   │   └── DarkModeToggle.tsx
-    │   │   ├── Footer.tsx
-    │   │   ├── Header.tsx
-    │   │   ├── InputField.tsx
-    │   │   ├── Navbar
-    │   │   │   └── Navbar.tsx
-    │   │   └── ProtectedRoute.tsx
-    │   ├── contexts
-    │   │   ├── AuthContext.tsx
-    │   │   └── ThemeContext.tsx
-    │   ├── index.css
-    │   ├── layout
-    │   │   └── root
-    │   │       └── Root.tsx
-    │   ├── main.tsx
-    │   ├── routes
-    │   │   ├── about
-    │   │   │   └── About.tsx
-    │   │   ├── adminConsole
-    │   │   │   ├── AdminConsole.tsx
-    │   │   │   └── UserFormModal.tsx
-    │   │   ├── Comment.tsx
-    │   │   ├── error
-    │   │   │   ├── Error.module.scss
-    │   │   │   ├── ErrorPage.tsx
-    │   │   │   └── TicketIdError.tsx
-    │   │   ├── index.tsx
-    │   │   ├── Login.tsx
-    │   │   ├── NewTicketForm.tsx
-    │   │   ├── Register.tsx
-    │   │   ├── test
-    │   │   │   └── TicketTestComponent.tsx
-    │   │   ├── Ticket.tsx
-    │   │   └── Tickets.tsx
-    │   ├── services
-    │   │   ├── admin-service.ts
-    │   │   ├── auth-service.ts
-    │   │   ├── comment-service.ts
-    │   │   └── ticket-service.ts
-    │   ├── ui
-    │   │   └── dialogs.ts
-    │   ├── utils
-    │   │   └── axios-helper.ts
-    │   └── vite-env.d.ts
-    ├── tailwind.config.js
-    ├── tsconfig.json
-    ├── tsconfig.node.json
-    └── vite.config.ts
+┣ 📂.idea
+┃ ┣ 📂inspectionProfiles
+┃ ┗ 📂libraries
+┣ 📂public
+┣ 📂src
+┃ ┣ 📂@types
+┃ ┃ ┗ 📜types.d.ts
+┃ ┣ 📂assets
+┃ ┃ ┗ 📜react.svg
+┃ ┣ 📂components
+┃ ┃ ┣ 📂DarkModeToggle
+┃ ┃ ┃ ┣ 📜DarkModeToggle.module.scss
+┃ ┃ ┃ ┗ 📜DarkModeToggle.tsx
+┃ ┃ ┣ 📂Navbar
+┃ ┃ ┃ ┗ 📜Navbar.tsx
+┃ ┃ ┣ 📜Card.tsx
+┃ ┃ ┣ 📜Footer.tsx
+┃ ┃ ┣ 📜Header.tsx
+┃ ┃ ┣ 📜InputField.tsx
+┃ ┃ ┗ 📜ProtectedRoute.tsx
+┃ ┣ 📂contexts
+┃ ┃ ┣ 📜AuthContext.tsx
+┃ ┃ ┗ 📜ThemeContext.tsx
+┃ ┣ 📂layout
+┃ ┃ ┗ 📂root
+┃ ┃   ┗ 📜Root.tsx
+┃ ┣ 📂routes
+┃ ┃ ┣ 📂about
+┃ ┃ ┃ ┗ 📜About.tsx
+┃ ┃ ┣ 📂adminConsole
+┃ ┃ ┃ ┣ 📜AdminConsole.tsx
+┃ ┃ ┃ ┗ 📜UserFormModal.tsx
+┃ ┃ ┣ 📂error
+┃ ┃ ┃ ┣ 📜Error.module.scss
+┃ ┃ ┃ ┣ 📜ErrorPage.tsx
+┃ ┃ ┃ ┗ 📜TicketIdError.tsx
+┃ ┃ ┣ 📂test
+┃ ┃ ┃ ┗ 📜TicketTestComponent.tsx
+┃ ┃ ┣ 📜Comment.tsx
+┃ ┃ ┣ 📜index.tsx
+┃ ┃ ┣ 📜Login.tsx
+┃ ┃ ┣ 📜NewTicketForm.tsx
+┃ ┃ ┣ 📜Register.tsx
+┃ ┃ ┣ 📜Ticket.tsx
+┃ ┃ ┗ 📜Tickets.tsx
+┃ ┣ 📂services
+┃ ┃ ┣ 📜admin-service.ts
+┃ ┃ ┣ 📜auth-service.ts
+┃ ┃ ┣ 📜comment-service.ts
+┃ ┃ ┗ 📜ticket-service.ts
+┃ ┣ 📂ui
+┃ ┃ ┗ 📜dialogs.ts
+┃ ┣ 📂utils
+┃ ┃ ┗ 📜axios-helper.ts
+┃ ┣ 📜index.css
+┃ ┣ 📜main.tsx
+┃ ┗ 📜vite-env.d.ts
+┣ 📜.gitattributes
+┣ 📜.gitignore
+┣ 📜index.html
+┣ 📜package.json
+┣ 📜postcss.config.js
+┣ 📜README.md
+┣ 📜tailwind.config.js
+┣ 📜tsconfig.json
+┣ 📜tsconfig.node.json
+┗ 📜vite.config.ts
+
 ```
 
 </details>
