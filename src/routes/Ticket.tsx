@@ -48,7 +48,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
       return;
     }
     try {
-      const response = await Comm.addComment(ticket.id, { content: newComment });
+      const response = await Comm.addComment(Number(ticket.id) , { content: newComment });
       if (response && response.id) {
         setComments(prev => [...prev, response]);
         setNewComment("");
@@ -74,15 +74,15 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
       if (userRole !== "ROLE_ADMIN") {
         // For regular users, don't change the status
         updateData["status"] = ticket.status || "OPEN";
-        await Tick.editTicket(ticket.id, updateData);
+        await Tick.editTicket(Number(ticket.id), updateData);
       } else {
         // Admin specific actions
         if (editedTicket.status === "CLOSE") {
-          await Tick.editTicketClosingComment(ticket.id, editedTicket.closingComment);
+          await Tick.editTicketClosingComment(Number(ticket.id), editedTicket.closingComment);
         } else if (editedTicket.status === "OPEN") {
-          await Tick.editTicketOpeningComment(ticket.id, editedTicket.closingComment);
+          await Tick.editTicketOpeningComment(Number(ticket.id), editedTicket.closingComment);
         } else {
-          await Tick.editTicket(ticket.id, { ...updateData, status: editedTicket.status });
+          await Tick.editTicket(Number(ticket.id), { ...updateData, status: editedTicket.status });
         }
       }
 
@@ -261,7 +261,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
               <Comment
                 key={comment.id}
                 comment={comment}
-                ticketId={ticket.id}
+                ticketId={Number(ticket.id)}
                 onCommentUpdate={(updatedComment) => updateCommentContent(comment.id, updatedComment)}
               />
             ))}
