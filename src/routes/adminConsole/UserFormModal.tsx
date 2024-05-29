@@ -27,12 +27,11 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ formData, closeModal, fet
 
     const onSubmit: SubmitHandler<FormData> = async data => {
         try {
-            let response;
             if (editMode && data.id) {
-                response = await AdminService.updateUser(data.id, data);
+                await AdminService.updateUser(data.id, data);
                 Dialogs.success("User updated successfully!");
             } else {
-                response = await AdminService.createUser(data);
+                await AdminService.createUser(data);
                 Dialogs.success("User created successfully!");
             }
             fetchUsers();
