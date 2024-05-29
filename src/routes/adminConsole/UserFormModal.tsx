@@ -8,13 +8,12 @@ import { Dialogs } from '../../ui/dialogs';
 
 interface UserFormModalProps {
     formData: FormData;
-    setFormData: (formData: FormData) => void;
     closeModal: () => void;
     fetchUsers: () => void;
     editMode: boolean;
 }
 
-const UserFormModal: React.FC<UserFormModalProps> = ({ formData, setFormData, closeModal, fetchUsers, editMode }) => {
+const UserFormModal: React.FC<UserFormModalProps> = ({ formData, closeModal, fetchUsers, editMode }) => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: formData
     });
@@ -38,7 +37,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ formData, setFormData, cl
             }
             fetchUsers();
             closeModal();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving user:', error.message);
             if (axios.isAxiosError(error) && error.response) {
                 const message = error.response.data.message || "Error saving user.";

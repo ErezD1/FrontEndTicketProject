@@ -17,12 +17,11 @@ const Register: React.FC = () => {
       // Handle success, e.g., navigate to login or show success message
       console.log("Registration successful:", response);
       navigate("/login");
-    } catch (error) {
+    } catch (error: any) {
       // Handle error, e.g., show error message
       Dialogs.error(error.message || "Registration failed. Please try again.");
     }
   };
-
 
   return (
     <>
