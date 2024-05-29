@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldErrors, UseFormRegister, Path, RegisterOptions, FieldValues } from 'react-hook-form';
+import { FieldErrors, UseFormRegister, Path, RegisterOptions, FieldValues, ValidationRule } from 'react-hook-form';
 
 type InputFieldProps<T extends FieldValues> = {
     register: UseFormRegister<T>;
@@ -7,7 +7,7 @@ type InputFieldProps<T extends FieldValues> = {
     name: Path<T>;
     label?: string;
     type?: React.HTMLInputTypeAttribute;
-    pattern?: RegisterOptions<T>[Path<T>]['pattern'];
+    pattern?: ValidationRule<RegExp>;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const InputField = <T extends FieldValues>({ label, name, register, errors, type = 'text', pattern, ...rest }: InputFieldProps<T>) => {

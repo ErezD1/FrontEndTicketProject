@@ -3,13 +3,13 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
 
-  if (isLoading) {
-    return <div>Loading...</div>; // Or any other loading indicator
+  if (authContext?.isLoading) {
+    return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated()) {
+  if (!authContext?.isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
