@@ -37,7 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     rehydrateUser();
   }, []);
 
-  const setUserState = (username: string, token: string, decodedToken: JWTToken) => {
+  const setUserState = (_username: string, token: string, decodedToken: JWTToken) => {
     setUser({
       username: decodedToken.sub,  // Assuming sub is the username
       token,

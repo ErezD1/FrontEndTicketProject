@@ -287,3 +287,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
 }
 
 export default Ticket;
+function jwtDecode(token: string): any {
+  throw new Error("Function not implemented.");
+}
+
