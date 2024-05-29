@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldErrors, UseFormRegister, Path, RegisterOptions, FieldValues, ValidationRule } from 'react-hook-form';
+import { FieldErrors, UseFormRegister, Path, ValidationRule, FieldValues } from 'react-hook-form';
 
 type InputFieldProps<T extends FieldValues> = {
     register: UseFormRegister<T>;
@@ -23,7 +23,7 @@ const InputField = <T extends FieldValues>({ label, name, register, errors, type
             />
             {errors[name] && (
                 <div className="absolute top-full mt-1 right-0 bg-red-100 border border-red-500 text-red-700 px-3 py-1 rounded-lg text-sm shadow-lg">
-                    {errors[name].message as string}
+                    {errors[name]?.message as string}
                 </div>
             )}
         </div>

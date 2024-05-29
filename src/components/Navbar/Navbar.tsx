@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from "react-router-dom";
 import { BsHouse } from "react-icons/bs";
 import { AiFillSetting } from "react-icons/ai";  // Admin console icon

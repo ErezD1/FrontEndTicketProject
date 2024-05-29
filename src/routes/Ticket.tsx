@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import { Dialogs } from "../ui/dialogs";
 import { TicketType, TicketComment } from "../@types/types";
 import { Tick } from "../services/ticket-service";
@@ -106,7 +105,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
 
   const formatDate = (dateString: string | number | Date | undefined) => {
     if (!dateString) return 'N/A'; // Handle undefined case
-    const options = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
+    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
@@ -158,7 +157,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
                   value={editedTicket.description}
                   onChange={handleEditChange}
                   className="mt-1 block w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                  rows="4"
+                  rows={4}
                 />
               </div>
             </>
@@ -201,7 +200,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
           <p className="text-gray-700">Updated At: {formatDate(ticket.updatedAt)}</p>
         </div>
         <div>
-          <p className="text-gray-500">Last Updated By: {ticket.lastUpdatedBy}</p> {/* Add this line */}
+          <p className="text-gray-500">Last Updated By: {ticket.lastUpdatedBy}</p>
         </div>
 
         <div className="mt-4">
