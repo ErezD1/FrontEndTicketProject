@@ -1,4 +1,3 @@
-
 export const baseUrl = `http://localhost:8080/api/v1`;
 
 async function getTickets(pageSize = 5, currentPage = 0, sortOrder = "desc") {
@@ -6,8 +5,8 @@ async function getTickets(pageSize = 5, currentPage = 0, sortOrder = "desc") {
     if (!token) throw new Error("No authentication token available");
 
     const url = new URL(`${baseUrl}/tickets`);
-    url.searchParams.append("pageSize", pageSize);
-    url.searchParams.append("pageNo", currentPage);
+    url.searchParams.append("pageSize", pageSize.toString());
+    url.searchParams.append("pageNo", currentPage.toString());
     url.searchParams.append("sortDir", sortOrder);
 
     try {
@@ -141,7 +140,6 @@ async function editTicketClosingComment(id: number, closingComment: string): Pro
     }
 }
 
-
 async function editTicketOpeningComment(
 	id: number,
 	closingComment: string
@@ -172,7 +170,6 @@ async function editTicketOpeningComment(
 		throw error; // This will now contain the more descriptive error message
 	}
 }
-
 
 export const Tick = {
 	getTickets,

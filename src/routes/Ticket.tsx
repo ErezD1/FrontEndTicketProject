@@ -48,7 +48,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
       return;
     }
     try {
-      const response = await Comm.addComment(Number(ticket.id), { content: newComment }) as TicketComment;
+      const response = await Comm.addComment(Number(ticket.id), { content: newComment }) as unknown as TicketComment;
       if (response && response.id) {
         setComments(prev => [...prev, response]);
         setNewComment("");
@@ -64,7 +64,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
 
   const saveEdits = async () => {
     try {
-      const updateData: Omit<TicketType, "id" | "createdAt" | "updatedAt" | "username" | "comments"> = {
+      const updateData = {
         subject: editedTicket.subject,
         description: editedTicket.description,
         status: editedTicket.status,
@@ -188,7 +188,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
                 <input
                   type="text"
                   name="closingComment"
-                  value={editedTicket.closingComment}
+                  value={editedTicket.closingComment || ""}
                   onChange={handleEditChange}
                   className="mt-1 block w-full p-2 bg-gray-50 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                   placeholder="Add a closing comment"

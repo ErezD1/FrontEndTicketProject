@@ -87,7 +87,7 @@ class AdminService {
             //console.log("Users fetched successfully:", response.data);
 
             // Log the raw roles data from the response
-            response.data.users.forEach(user => {
+            response.data.users.forEach(_user => {
                 //console.log(`User: ${user.username}, Roles: ${user.roles}`);
             });
 
