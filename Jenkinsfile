@@ -2,34 +2,29 @@ pipeline {
     agent any
 
     stages {
-        stage('Verify Java Version') {
-            steps {
-                sh 'java -version'
-            }
-        }
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        stage('Set Permissions') {
+        stage('Install Dependencies') {
             steps {
-                sh 'chmod +x ./mvnw'
+                sh 'npm install'
             }
         }
         stage('Build') {
             steps {
-                sh './mvnw clean package'
+                sh 'npm run build'
             }
         }
         stage('Test') {
             steps {
-                sh './mvnw test'
+                sh 'npm test'
             }
         }
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'build/**', fingerprint: true
             }
         }
     }
