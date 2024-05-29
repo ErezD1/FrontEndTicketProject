@@ -4,6 +4,8 @@ import { TicketType, TicketComment } from "../@types/types";
 import { Tick } from "../services/ticket-service";
 import { Comm } from "../services/comment-service";
 import Comment from "./Comment";
+import jwtDecode from "jwt-decode"; // Ensure this import
+
 interface Props {
   ticket: TicketType;
   onTicketUpdate: () => Promise<void>;
@@ -287,7 +289,3 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
 }
 
 export default Ticket;
-function jwtDecode(token: string): any {
-  throw new Error("Function not implemented.");
-}
-

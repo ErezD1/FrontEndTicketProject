@@ -16,7 +16,7 @@ const Tickets: React.FC = () => {
 
   const navigate = useNavigate();
   const auth = useAuth();
-  const userRole = auth.user?.roles[0]; // Assuming roles is an array and we take the first role.
+  const userRole = auth.user?.roles?.[0]; // Assuming roles is an array and we take the first role.
 
   const fetchTickets = async (page: number, size: number, order: string) => {
     if (!auth.isAuthenticated()) {
