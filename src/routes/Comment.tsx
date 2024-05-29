@@ -38,15 +38,11 @@ const Comment: React.FC<Props> = ({ comment, ticketId, onCommentUpdate }) => {
 
   const formatDate = (dateString: string | number | Date | undefined) => {
     if (!dateString) return 'N/A';
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric", month: "long", day: "numeric",
-      hour: "2-digit", minute: "2-digit", second: "2-digit",
-      hour12: false
-    };
+    const options = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
-  const canEditOrDelete = currentUser?.roles?.includes('ROLE_ADMIN') || currentUser?.username === comment.username;
+  const canEditOrDelete = currentUser?.roles.includes('ROLE_ADMIN') || currentUser?.username === comment.username;
 
   return (
     <div className="bg-gray-100 rounded-md p-2 mb-2">

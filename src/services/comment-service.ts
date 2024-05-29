@@ -1,3 +1,5 @@
+import { TicketType, RegisterRequest, TicketComment } from "../@types/types";
+
 export const baseUrl = `http://localhost:8080/api/v1`;
 
 

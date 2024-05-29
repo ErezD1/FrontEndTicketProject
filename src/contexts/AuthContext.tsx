@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Auth } from '../services/auth-service';
-import jwtDecode from 'jwt-decode'; // Corrected import
+import { Auth, AuthResponse } from '../services/auth-service';
+import { jwtDecode } from "jwt-decode"; // Corrected import
 
 interface User {
   username: string;
@@ -14,6 +14,7 @@ interface JWTToken {
   iat: number;  // Issued at
   scope?: string;  // Optional scope or roles
 }
+
 
 interface AuthContextType {
   user: User | null;
@@ -37,38 +38,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     rehydrateUser();
   }, []);
 
-  const setUserState = (_username: string, token: string, decodedToken: JWTToken) => {
+  const setUserState = (username: string, token: string, decodedToken: JWTToken) => {
+    if (!decodedToken.sub || !decodedToken.exp || !decodedToken.iat) {
+      throw new Error("JWT token is missing necessary claims");
+    }
     setUser({
       username: decodedToken.sub,  // Assuming sub is the username
       token,
+      sub: decodedToken.sub,
+      exp: decodedToken.exp,
+      iat: decodedToken.iat,
       roles: decodedToken.scope ? decodedToken.scope.split(" ") : []
     });
   };
 
-  const rehydrateUser = () => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      try {
-        const decodedToken: JWTToken = jwtDecode(token);
-        if (decodedToken.exp * 1000 > new Date().getTime()) {
-          setUserState(localStorage.getItem('username') || '', token, decodedToken);
-          setLogoutTimer(decodedToken.exp * 1000 - new Date().getTime());
-        } else {
-          logout();
-        }
-      } catch (error) {
-        console.error('Failed to decode token:', error);
-        logout();  // Log out the user if the token is invalid
+  
+const rehydrateUser = () => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    try {
+      const decodedToken: JWTToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 > new Date().getTime()) {
+        setUserState(localStorage.getItem('username') || '', token, decodedToken);
+        setLogoutTimer(decodedToken.exp * 1000 - new Date().getTime());
+      } else {
+        logout();
       }
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      logout();  // Log out the user if the token is invalid
     }
-    setIsLoading(false);
   }
+  setIsLoading(false);
+}
 
   const setLogoutTimer = (delay: number) => {
     setTimeout(() => {
       logout();
     }, delay);
   };
+
 
   const login = async (data: { username: string; password: string }) => {
     try {

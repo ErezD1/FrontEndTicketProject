@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { Dialogs } from "../ui/dialogs";
 import { TicketType, TicketComment } from "../@types/types";
 import { Tick } from "../services/ticket-service";
 import { Comm } from "../services/comment-service";
 import Comment from "./Comment";
-import jwtDecode from "jwt-decode";
-
 interface Props {
   ticket: TicketType;
   onTicketUpdate: () => Promise<void>;
@@ -17,7 +16,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
   const [editedTicket, setEditedTicket] = useState<Omit<TicketType, "id" | "createdAt" | "updatedAt" | "username" | "comments">>({
     subject: ticket.subject,
     description: ticket.description,
-    status: ticket.status || "UPDATE",
+    status: ticket.status || "UPDATE", // Ensure status is not null and default to "UPDATE"
     closingComment: ticket.closingComment || "",
   });
 
@@ -28,7 +27,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
     setEditedTicket({
       subject: ticket.subject,
       description: ticket.description,
-      status: ticket.status || "UPDATE",
+      status: ticket.status || "UPDATE", // Ensure status is not null
       closingComment: ticket.closingComment || "",
     });
   }, [ticket]);
@@ -48,7 +47,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
       return;
     }
     try {
-      const response = await Comm.addComment(Number(ticket.id), { content: newComment }) as TicketComment;
+      const response = await Comm.addComment(ticket.id, { content: newComment });
       if (response && response.id) {
         setComments(prev => [...prev, response]);
         setNewComment("");
@@ -64,29 +63,31 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
 
   const saveEdits = async () => {
     try {
-      const updateData: Omit<TicketType, "id" | "createdAt" | "updatedAt" | "username" | "comments"> = {
+      const updateData = {
         subject: editedTicket.subject,
         description: editedTicket.description,
         status: editedTicket.status,
-        closingComment: editedTicket.closingComment || "",
+        closingComment: editedTicket.closingComment,
       };
 
       if (userRole !== "ROLE_ADMIN") {
-        updateData.status = ticket.status || "OPEN";
-        await Tick.editTicket(Number(ticket.id), updateData);
+        // For regular users, don't change the status
+        updateData["status"] = ticket.status || "OPEN";
+        await Tick.editTicket(ticket.id, updateData);
       } else {
+        // Admin specific actions
         if (editedTicket.status === "CLOSE") {
-          await Tick.editTicketClosingComment(Number(ticket.id), editedTicket.closingComment || "");
+          await Tick.editTicketClosingComment(ticket.id, editedTicket.closingComment);
         } else if (editedTicket.status === "OPEN") {
-          await Tick.editTicketOpeningComment(Number(ticket.id), editedTicket.closingComment || "");
+          await Tick.editTicketOpeningComment(ticket.id, editedTicket.closingComment);
         } else {
-          await Tick.editTicket(Number(ticket.id), { ...updateData, status: editedTicket.status });
+          await Tick.editTicket(ticket.id, { ...updateData, status: editedTicket.status });
         }
       }
 
       setEditMode(false);
       Dialogs.success("Ticket updated successfully!");
-      await onTicketUpdate();
+      await onTicketUpdate(); // Ensure the component re-renders by re-fetching ticket data
     } catch (error) {
       console.error("Failed to save ticket edits:", error);
       Dialogs.error("Failed to update ticket. Please try again.");
@@ -104,8 +105,8 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
   };
 
   const formatDate = (dateString: string | number | Date | undefined) => {
-    if (!dateString) return 'N/A';
-    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
+    if (!dateString) return 'N/A'; // Handle undefined case
+    const options = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
@@ -131,7 +132,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
               ticket.status === "IN_PROGRESS" ? "bg-yellow-200 text-yellow-900" :
                 ticket.status === "CLOSED" ? "bg-red-200 text-red-900" :
                   "bg-gray-200 text-gray-900"
-            }`}
+              }`}
           >
             {ticket.status ? ticket.status.replace('_', ' ') : 'N/A'}
           </span>
@@ -157,7 +158,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
                   value={editedTicket.description}
                   onChange={handleEditChange}
                   className="mt-1 block w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                  rows={4}
+                  rows="4"
                 />
               </div>
             </>
@@ -186,7 +187,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
                 <input
                   type="text"
                   name="closingComment"
-                  value={editedTicket.closingComment || ""}
+                  value={editedTicket.closingComment}
                   onChange={handleEditChange}
                   className="mt-1 block w-full p-2 bg-gray-50 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                   placeholder="Add a closing comment"
@@ -200,7 +201,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
           <p className="text-gray-700">Updated At: {formatDate(ticket.updatedAt)}</p>
         </div>
         <div>
-          <p className="text-gray-500">Last Updated By: {ticket.lastUpdatedBy}</p>
+          <p className="text-gray-500">Last Updated By: {ticket.lastUpdatedBy}</p> {/* Add this line */}
         </div>
 
         <div className="mt-4">
@@ -259,7 +260,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
               <Comment
                 key={comment.id}
                 comment={comment}
-                ticketId={Number(ticket.id)}
+                ticketId={ticket.id}
                 onCommentUpdate={(updatedComment) => updateCommentContent(comment.id, updatedComment)}
               />
             ))}

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
@@ -13,21 +13,18 @@ export type LoginRequest = {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // This is using the `login` method from AuthContext
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginRequest>();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit: SubmitHandler<LoginRequest> = async (data) => {
+
+  const onSubmit = async (data: LoginRequest) => {
     try {
-      await login(data);
+      await login(data); // Calls the login from context which uses authService
       Dialogs.success("Logged in successfully");
       navigate("/tickets");
     } catch (error) {
-      if (error instanceof Error) {
-        Dialogs.error(`Failed to log in: ${error.message}`);
-      } else {
-        Dialogs.error('An unexpected error occurred');
-      }
+      Dialogs.error(`Failed to log in: ${error.message}`);
     }
   };
 

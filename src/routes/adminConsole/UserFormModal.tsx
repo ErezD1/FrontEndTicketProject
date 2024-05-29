@@ -8,12 +8,13 @@ import { Dialogs } from '../../ui/dialogs';
 
 interface UserFormModalProps {
     formData: FormData;
+    setFormData: (formData: FormData) => void;
     closeModal: () => void;
     fetchUsers: () => void;
     editMode: boolean;
 }
 
-const UserFormModal: React.FC<UserFormModalProps> = ({ formData, closeModal, fetchUsers, editMode }) => {
+const UserFormModal: React.FC<UserFormModalProps> = ({ formData, setFormData, closeModal, fetchUsers, editMode }) => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: formData
     });
@@ -27,16 +28,17 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ formData, closeModal, fet
 
     const onSubmit: SubmitHandler<FormData> = async data => {
         try {
+            let response;
             if (editMode && data.id) {
-                await AdminService.updateUser(data.id, data);
+                response = await AdminService.updateUser(data.id, data);
                 Dialogs.success("User updated successfully!");
             } else {
-                await AdminService.createUser(data);
+                response = await AdminService.createUser(data);
                 Dialogs.success("User created successfully!");
             }
             fetchUsers();
             closeModal();
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error saving user:', error.message);
             if (axios.isAxiosError(error) && error.response) {
                 const message = error.response.data.message || "Error saving user.";
@@ -64,13 +66,14 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ formData, closeModal, fet
                             pattern={{
                                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/,
                                 message: "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character."
-                            } as any}
+                            }}
                         />
                     )}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Roles</label>
                         <select
                             multiple
+                            name="roles"
                             className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${editMode ? 'bg-yellow-100' : ''}`}
                             {...register("roles")}
                         >

@@ -4,7 +4,7 @@ import Ticket from './Ticket';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Dialogs } from '../ui/dialogs';
-import NewTicketForm from './NewTicketForm';
+import NewTicketForm from './NewTicketForm'; // Adjust the path as necessary
 
 const Tickets: React.FC = () => {
   const [tickets, setTickets] = useState([]);
@@ -16,7 +16,7 @@ const Tickets: React.FC = () => {
 
   const navigate = useNavigate();
   const auth = useAuth();
-  const userRole = auth.user?.roles?.[0];
+  const userRole = auth.user?.roles[0]; // Assuming roles is an array and we take the first role.
 
   const fetchTickets = async (page: number, size: number, order: string) => {
     if (!auth.isAuthenticated()) {
@@ -26,7 +26,7 @@ const Tickets: React.FC = () => {
 
     try {
       const response = await Tick.getTickets(size, page, order);
-      if (response && response.tickets) {
+      if (response && response.tickets) { // Adjusted to match backend response
         setTickets(response.tickets);
         setTotalPages(response.totalPages);
       } else {

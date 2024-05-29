@@ -11,7 +11,7 @@ class AdminService {
 
     private handleError(error: AxiosError): never {
         if (error.response) {
-            const message = (error.response.data as { message?: string })?.message || "An error occurred.";
+            const message = error.response.data?.message || "An error occurred.";
             console.error(`HTTP error: ${error.response.status}`, error.response.data);
             throw new Error(`Server responded with error: ${message}`);
         } else if (error.request) {
@@ -42,6 +42,7 @@ class AdminService {
             const response = await axios.get<UserResponseDTO>(`${API_URL}/${id}`, {
                 headers: AdminService.headers,
             });
+            //console.log("User fetched successfully:", response.data);
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) this.handleError(error);
@@ -68,6 +69,7 @@ class AdminService {
             await axios.delete<void>(`${API_URL}/${id}`, {
                 headers: AdminService.headers,
             });
+            //console.log("User deleted successfully.");
         } catch (error) {
             if (axios.isAxiosError(error)) this.handleError(error);
             throw new Error("Failed to delete user.");
@@ -82,6 +84,14 @@ class AdminService {
                     headers: AdminService.headers,
                 }
             );
+            //console.log("Users fetched successfully:", response.data);
+
+            // Log the raw roles data from the response
+            response.data.users.forEach(user => {
+                //console.log(`User: ${user.username}, Roles: ${user.roles}`);
+            });
+
+            // Directly return the users with their roles as provided by the backend
             return response.data.users;
         } catch (error) {
             if (axios.isAxiosError(error)) this.handleError(error);
