@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   // Check if the user is an admin
-  const isAdmin = user && user.roles && user.roles.includes('ROLE_ADMIN'); // Adjusted to check user and user.roles existence and corrected role string
+  const isAdmin = user?.roles?.includes('ROLE_ADMIN'); // Adjusted to check user and user.roles existence and corrected role string
 
   return (
     <nav className="flex flex-row justify-between bg-slate-100 text-xl text-slate-900 dark:bg-slate-700 dark:text-white shadow-lg mb-1 p-4">
@@ -26,11 +26,11 @@ const Navbar = () => {
         {isAdmin && <NavLink to="/admin"><AiFillSetting /></NavLink>}
       </div>
       <div className="flex flex-row gap-2">
-        {user && user.username ? (
+        {user?.username ? (
           <>
             <span>Welcome, {user.username}</span>
             <button onClick={handleLogout}>Logout</button>
-            {user.roles && !user.roles.includes('ROLE_ADMIN') && <NavLink to="/register">Register</NavLink>}
+            {!user.roles?.includes('ROLE_ADMIN') && <NavLink to="/register">Register</NavLink>}
           </>
         ) : (
           <>
