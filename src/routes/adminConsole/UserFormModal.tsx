@@ -64,14 +64,13 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ formData, closeModal, fet
                             pattern={{
                                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/,
                                 message: "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character."
-                            }}
+                            } as any}
                         />
                     )}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Roles</label>
                         <select
                             multiple
-                            name="roles"
                             className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${editMode ? 'bg-yellow-100' : ''}`}
                             {...register("roles")}
                         >

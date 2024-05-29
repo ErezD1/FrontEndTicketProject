@@ -90,7 +90,7 @@ const AdminConsole: React.FC = () => {
             </div>
 
             {isModalOpen && (
-                <UserFormModal formData={formData} setFormData={setFormData} closeModal={closeModal} fetchUsers={fetchUsers} editMode={editMode} />
+                <UserFormModal formData={formData} closeModal={closeModal} fetchUsers={fetchUsers} editMode={editMode} />
             )}
         </div>
     );

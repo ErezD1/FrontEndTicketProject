@@ -48,7 +48,7 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
       return;
     }
     try {
-      const response = await Comm.addComment(Number(ticket.id) , { content: newComment });
+      const response = await Comm.addComment(Number(ticket.id), { content: newComment }) as TicketComment;
       if (response && response.id) {
         setComments(prev => [...prev, response]);
         setNewComment("");
@@ -64,23 +64,23 @@ const Ticket: React.FC<Props> = ({ ticket, onTicketUpdate, userRole }) => {
 
   const saveEdits = async () => {
     try {
-      const updateData = {
+      const updateData: Omit<TicketType, "id" | "createdAt" | "updatedAt" | "username" | "comments"> = {
         subject: editedTicket.subject,
         description: editedTicket.description,
         status: editedTicket.status,
-        closingComment: editedTicket.closingComment,
+        closingComment: editedTicket.closingComment || "",
       };
 
       if (userRole !== "ROLE_ADMIN") {
         // For regular users, don't change the status
-        updateData["status"] = ticket.status || "OPEN";
+        updateData.status = ticket.status || "OPEN";
         await Tick.editTicket(Number(ticket.id), updateData);
       } else {
         // Admin specific actions
         if (editedTicket.status === "CLOSE") {
-          await Tick.editTicketClosingComment(Number(ticket.id), editedTicket.closingComment);
+          await Tick.editTicketClosingComment(Number(ticket.id), editedTicket.closingComment || "");
         } else if (editedTicket.status === "OPEN") {
-          await Tick.editTicketOpeningComment(Number(ticket.id), editedTicket.closingComment);
+          await Tick.editTicketOpeningComment(Number(ticket.id), editedTicket.closingComment || "");
         } else {
           await Tick.editTicket(Number(ticket.id), { ...updateData, status: editedTicket.status });
         }
